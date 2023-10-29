@@ -107,7 +107,11 @@ with st.spinner("Generating Summary.."):
                 summaries.append(summary)
 
             text = ' '.join(summaries)
-            st.write(text)
+            input_ids = tokenizer.encode(text, return_tensors="pt", max_length=1024, truncation=True)
+            summary_ids = model.generate(input_ids, max_length=max_length, min_length=min_length, do_sample=do_sample)
+            summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
+              
+            st.write(summary)
 
     # process pdf
     if input_option == 'PDF':
@@ -132,7 +136,11 @@ with st.spinner("Generating Summary.."):
                     summaries.append(summary)
 
                 text = ' '.join(summaries)
-                st.write(text)
+                input_ids = tokenizer.encode(text, return_tensors="pt", max_length=1024, truncation=True)
+                summary_ids = model.generate(input_ids, max_length=max_length, min_length=min_length, do_sample=do_sample)
+                summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
+              
+                st.write(summary)
             except Exception as e:
                 st.error(f"Error while processing PDF: {str(e)}")
             
